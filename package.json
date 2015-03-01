@@ -1,0 +1,23 @@
+{
+  "name": "nodejs_demo",
+  "version": "0.0.1",
+  "description": "A small node.js-demo app, which implements a simple storage system for personal info",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "nodejs",
+    "mean",
+    "angularjs",
+    "mongodb",
+    "express",
+    "rest"
+  ],
+  "author": "Matias Huhdanmäki",
+  "license": "BSD",
+  "dependencies": {
+    "express": "~4.12.0",
+    "mongoose": "~3.8.24"
+  }
+}
