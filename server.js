@@ -1,8 +1,14 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var router = require('./app/router');
+
 var app = express();
 
-app.get('/', function(req, res) {
-   res.send('Hello Express!');
-});
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.listen(3000);
+mongoose.connect('mongodb://localhost/nodejs_demo');
+
+app.use('/api', router);
+
+app.listen(8080);
