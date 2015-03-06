@@ -1,5 +1,5 @@
 module.exports = {
     //Database URL
     db: 'mongodb://localhost/nodejs_demo',
-    port: '8080'
+    port: process.env.PORT || 8080
 };
