@@ -1,0 +1,65 @@
+doctype html
+html
+  head
+    title= 'Henkilötietolomake'
+    meta(http-equiv='Content-Type' content='text/html' charset='utf-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=decice-width, initial-scale=1')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+    link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    link(href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js')
+    script(src='/application.js')
+    script(src='/libs/ui-bootstrap-tpls-0.12.1.min.js')
+  body(ng-app='PersonalInfoForm')
+    .container-fluid
+      .main(ng-controller='FormController')
+        .row.header
+          h1= 'Henkilötietolomake'
+        form.form-container(ng-submit='create()')
+          .row
+            .col-xs-0.col-sm-2.col-md-3.col-lg-4
+            .col-xs-12.col-sm-8.col-md-6.col-lg-4
+              .form-group
+                label(for='firstName')= 'Etunimi'
+                input#firstName.form-control(type='text' placeholder='Syötä etunimi' ng-model='firstName')
+              .error= '{{ firstNameError }}'
+              .form-group
+                label(for='lastName')= 'Sukunimi'
+                input#lastName.form-control(type='text' placeholder='Syötä sukunimi' ng-model='lastName')
+              .error= '{{ lastNameError }}'
+              .form-group
+                label(for='email')= 'Sähköposti'
+                input#email.form-control(type='text' placeholder='Syötä sähköpostiosoite' ng-model='email')
+              .error= '{{ emailError }}'
+              .form-group
+                label(for='dayOfBirth')= 'Syntymäaika'
+                .input-group
+                  input#dayOfBirth.form-control(type='text' datepicker-popup='yyyy-MM-dd' ng-model='dayOfBirth' is-open='opened' close-text='Close' datepicker-options='dateOptions' min-date='1800-01-01' max-date='maxDate' placeholder='Valitse syntymäaika')
+                  span.input-group-btn
+                    button.btn.btn-default(ng-click='openDatePicker($event)')
+                      i.fa.fa-calendar
+                .error= '{{ dayOfBirthError }}'
+              .form-group
+                label(for='socialId')= 'Sosiaaliturvatunnus'
+                input#socialId.form-control(type='text', placeholder='Syötä sosiaaliturvatunnus' ng-model='socialId')
+              .error= '{{ socialIdError }}'
+              button.btn.btn-primary(type='submit' ng-hide='isEdit')= 'Lähetä'
+              button.btn.btn-primary(type='button' ng-hide='!isEdit' ng-click='updatePerson()')= 'Muokkaa'
+              button.btn.btn-primary.margin-left-10(type='button' ng-click='clearForm()')= 'Tyhjennä'
+              .post-status(ng-class='postStatusStyle')= '{{ postStatus }}'
+            .col-xs-0.col-sm-2.col-md-3.col-lg-4
+          .row.list
+            .col-xs-0.col-sm-2.col-md-3.col-lg-4
+            .col-xs-12.col-sm-8.col-md-6.col-lg-4
+              h1.list-header= 'Tallennetut henkilöt'
+              table.person-list
+                  tr(ng-repeat='p in persons')
+                    td.name= '{{ p.firstName }} {{ p.lastName }}'
+                    td.email= '{{ p.email }}'
+                      i.fa.fa-trash-o.delete(ng-click='deletePerson(p._id)' tooltip='Poista') 
+                      i.fa.fa-pencil.edit(ng-click='editPerson(p)' tooltip='Muokkaa')
+            .col-xs-0.col-sm-2.col-md-3.col-lg-4

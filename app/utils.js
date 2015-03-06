@@ -1,49 +1,121 @@
-// General utility functions
+/** 
+ * General utility functions
+ */
 var utils = {};
 
-// Get erraneous fields from mongoose error message
-// for pretty and simple error responses
-utils.prettyMongooseErrors = function (message) {
-  var errors = [];
-  for (var key in message.errors) {
-    var field = {};  
-    field[key] = message.errors[key].message;
-    errors.push(field);
+/** 
+ * Make a pretty errorlist out of Mongooses validation errors. Returns list
+ * of associatove arrays in form of: {field: 'error'} sorted in alphabetical
+ * order. Works for MongoDB uniqueness errors and CastErrors also.
+ */
+utils.prettyMongooseErrors = function (err) {
+  var fields = [];
+  var errors = {};
+  var field;
+  // If error comes from MongoDB conserning uniqueness of a field
+  if (err && (11000 === err.code || 11001 === err.code)) {
+    field = err.err.match(/\$(.*)_/);
+    errors[field[1]] = 'already_exists';
+    return errors;
+  }
+  // If error is a CastError
+  if (err.name === 'CastError') {
+    field = err.path;
+    errors[field] = 'invalid';
+    return errors;
+  }
+  // Regular Mongoose validation errors
+  for (var key in err.errors) {
+    fields.push(key);
+  }
+  fields.sort();
+  for (var i = 0; i < fields.length; i++) {  
+    errors[fields[i]] = err.errors[fields[i]].message;
   }
   return errors;
 };
 
-exports.utils = utils;
+/*
+* Slice Person-model's socialId's date to 'yyyy-mm-dd'-format string
+*/
+utils.parseSocialIdDate = function (socialId) {
+  try {
+    var socialIdDate = socialId.substring(0,6);
+    var slicedDate = {};
+    slicedDate.day = socialIdDate.substring(0,2);
+    slicedDate.month = socialIdDate.substring(2,4);
+    slicedDate.year = socialIdDate.substring(4,6);
+    var centuryId = socialId.charAt(6);
+    if ( centuryId === '+') {
+      slicedDate.year =  '18' + slicedDate.year;
+    } else if (centuryId === 'A') {
+      slicedDate.year =  '20' + slicedDate.year;
+    } else {
+      slicedDate.year =  '19' + slicedDate.year;
+    }
+    socialIdDate = slicedDate.year + '-' + slicedDate.month + '-' + slicedDate.day;
+    return socialIdDate;
+  } catch (err) {
+    return 'invalid_socialId';
+  }
+  
+};
 
-// Validators
+/*
+* Parse Date-object to 'yyyy-mm-dd'-format string.
+*/
+utils.parseDateObject = function (date) {
+  try {
+    var year = date.getFullYear();
+    var month = String(date.getMonth() + 1);
+    if (month.length === 1) {
+      month = '0' + month;
+    }
+    var day = String(date.getDate());
+    if (day.length === 1) {
+      day = '0' + day;
+    }
+    dateString = year + '-' + month + '-' + day;
+    return dateString;
+  } catch (err) {
+    return 'invalid date';
+  }
+};
+module.exports.utils = utils;
 
+/**
+ * Validators for mongoose validation
+ */
 var validation = {};
 
-validation.isName = function (value) {
-  return /^[a-zA-Z\-äöå]+$/.test(value);
+// Accept only letters and dashes
+validation.isName = function (value, respond) {
+  respond(/^[a-zA-Z\-äöåÄÖÅ]+$/.test(value));
 };
 
-validation.isEmail = function (value) {
-  return /\S+@\S+/.test(value);
+// A simple email-validator
+validation.isEmail = function (value ,respond) {
+  respond(/\S+@\S+/.test(value));
 };
 
-validation.isSocialId = function (value) {
-  return /^\d{6}-\d{3}\w$/.test(value);
+// Test that Finnish social security number is correctly formatted
+validation.isSocialId = function (value, respond) {
+  respond(/^\d{6}[+-A]\d{3}[0-9A-Y]$/.test(value));
 };
 
-validation.isValidDate = function (value) {
-  var date = Date.parse(value);
-  if (isNaN(date)) {
-    return false;
-  }
-  return true;
+// Check that socialId's date matches with birth date
+validation.datesMatch = function (value, respond) {
+  var socialIdDateString = utils.parseSocialIdDate(value);
+  var dayOfBirthString = utils.parseDateObject(this.dayOfBirth);
+  respond(socialIdDateString == dayOfBirthString);
 };
 
-validation.dateIsNotInFuture = function (value) {
+// Check that date is not set in the future
+validation.dateIsNotInFuture = function (value, respond) {
   if (new Date(value).getTime() > new Date().getTime()) {
-    return false;
+    respond(false);
   }
-  return true;
+  respond(true);
 };
 
-exports.validation = validation;
+module.exports.validation = validation;

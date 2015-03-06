@@ -1,0 +1,107 @@
+body {
+    font-family: Lato;
+    background-color: #FAFAFA;
+    color: #212121;
+}
+
+.header {
+    font-family: Roboto;
+    font-weight: lighter;
+    background-color: #607D8B;
+    box-shadow: 0px 2px 5px -1px #bbb;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+hr {
+    height: 1px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #eee;
+    background-color: #eee;
+}
+
+.content {
+}
+
+.form-container {
+    padding-top: 15px;
+}
+
+h1 {
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.success {
+    color: #588929;
+    width: 100%;
+    text-align center;
+}
+
+.error {
+    color: #E64A19;
+    width: 100%;
+    text-align center;
+}
+
+label {
+    color: #455A64;
+}
+
+.post-status {
+    margin-top: 10px;
+    font-size: 13pt;
+}
+
+.container-fluid {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.row {
+    margin: 0px;
+}
+
+.list {
+    margin-top: 25px;
+    background-color: #CFD8DC;
+    min-height: 200px;
+    font-size: 12pt;
+    padding-bottom: 50px;
+}
+
+.list-header {
+    color: #607D8B;
+}
+
+.person-list {
+    font-weight: bolder;
+    color: #727272;
+}
+
+.name {
+    padding-right: 30px;
+}
+
+.edit {
+    float: right;
+    margin-left: 25px;
+}
+
+.edit:hover {
+    cursor: pointer;
+}
+
+.delete {
+    float: right;
+    margin-left: 4px;
+}
+
+.delete:hover {
+    cursor: pointer;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
