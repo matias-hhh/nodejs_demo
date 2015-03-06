@@ -14,6 +14,7 @@ angular.module('PersonalInfoForm', ['ui.bootstrap'])
     $scope.postStatus = '';
   };
   $scope.clearForm = function () {
+    $scope.clearStatus();
     $scope.firstName = '';
     $scope.lastName = '';
     $scope.email = '';

@@ -22,10 +22,16 @@ hr {
 }
 
 .content {
+    box-shadow: 0px 2px 5px -1px #bbb;
+    padding-bottom: 30px;
 }
 
 .form-container {
     padding-top: 15px;
+}
+
+.form-group {
+    margin-bottom : 15px;
 }
 
 h1 {
@@ -43,6 +49,7 @@ h1 {
     color: #E64A19;
     width: 100%;
     text-align center;
+    margin-bottom: 10px;
 }
 
 label {
@@ -50,8 +57,10 @@ label {
 }
 
 .post-status {
+    width: 100%;
     margin-top: 10px;
-    font-size: 13pt;
+    font-size: 15pt;
+    text-align: center
 }
 
 .container-fluid {
@@ -64,7 +73,6 @@ label {
 }
 
 .list {
-    margin-top: 25px;
     background-color: #CFD8DC;
     min-height: 200px;
     font-size: 12pt;
@@ -78,15 +86,14 @@ label {
 .person-list {
     font-weight: bolder;
     color: #727272;
+    width: 100%;
 }
 
 .name {
-    padding-right: 30px;
 }
 
 .edit {
     float: right;
-    margin-left: 25px;
 }
 
 .edit:hover {

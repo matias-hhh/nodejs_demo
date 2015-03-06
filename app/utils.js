@@ -4,9 +4,8 @@
 var utils = {};
 
 /** 
- * Make a pretty errorlist out of Mongooses validation errors. Returns list
- * of associatove arrays in form of: {field: 'error'} sorted in alphabetical
- * order. Works for MongoDB uniqueness errors and CastErrors also.
+ * Make a pretty errorlist out of Mongooses validation errors sorted in 
+ * alphabetical order. Works for MongoDB uniqueness errors and CastErrors also.
  */
 utils.prettyMongooseErrors = function (err) {
   var fields = [];
@@ -36,7 +35,7 @@ utils.prettyMongooseErrors = function (err) {
 };
 
 /*
-* Slice Person-model's socialId's date to 'yyyy-mm-dd'-format string
+* Parse Person-model's socialId's date to 'yyyy-mm-dd'-format string
 */
 utils.parseSocialIdDate = function (socialId) {
   try {
@@ -90,7 +89,7 @@ var validation = {};
 
 // Accept only letters and dashes
 validation.isName = function (value, respond) {
-  respond(/^[a-zA-Z\-äöåÄÖÅ]+$/.test(value));
+  respond(/^[a-zA-ZäöåÄÖÅ]{2,}\-{0,1}[a-zA-ZäöåÄÖÅ]*$/.test(value));
 };
 
 // A simple email-validator

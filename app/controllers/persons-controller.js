@@ -2,7 +2,7 @@ var Person = require('../models/person-model'),
   utils = require('../utils').utils;
 
 /**
- *  Get a list of persons
+ *  Get a list of all persons in the database
  */
 exports.list = function (req, res) {
   Person.find(function (err, persons) {
@@ -26,7 +26,7 @@ exports.create = function(req, res) {
     lastName: req.body.lastName,
     email: req.body.email,
     socialId: req.body.socialId,
-    dayOfBirth: new Date(req.body.dayOfBirth)
+    dayOfBirth: req.body.dayOfBirth
   });
 
   person.save(function (err) {

@@ -20,6 +20,7 @@ describe('person-model-tests:', function () {
   describe('save validation:', function () {
     it('should save when no errors in input data', function () {
       person.save(function (err) {
+        console.log(err);
         expect(err).to.not.exist;
       });
     });
